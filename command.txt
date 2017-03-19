@@ -1,0 +1,16 @@
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"
+//注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
+
+//创建版本库，版本库又名仓库，英文名repository，可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。
+$ mkdir learngit //首先，选择一个合适的地方，创建一个空目录
+$ cd learngit //进入该目录
+$ git init  //通过 git init 命令把这个目录变成Git可以管理的仓库，可以发现当前目录下多了一个.git的目录，这个目录是Git来跟踪管理版本库的
+
+//要随时掌握工作区的状态，使用git status命令。如果git status告诉你有文件被修改过，用git diff可以查看修改内容。
+$ git status //git status命令可以让我们时刻掌握仓库当前的状态
+$ git diff filename //git diff 顾名思义就是查看difference，显示的格式正是Unix通用的diff格式
+
+//提交修改和提交新文件是一样的两步，第一步是git add，在执行第二步git commit之前，我们再运行git status看看当前仓库的状态
+$ git add filename
+$ git commit -m "add distributed"
