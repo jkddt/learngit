@@ -12,5 +12,42 @@ $ git status //git status命令可以让我们时刻掌握仓库当前的状态
 $ git diff filename //git diff 顾名思义就是查看difference，显示的格式正是Unix通用的diff格式
 
 //提交修改和提交新文件是一样的两步，第一步是git add，在执行第二步git commit之前，我们再运行git status看看当前仓库的状态
-$ git add filename
+$ git add filename  //git add a.txt -> 匹配到a.txt ; git add *.txt -> 匹配到当前目录下所有txt ; git add **/*.txt -> 匹配到当前目录和子目录下所有txt ;git add . -> 匹配到当前目录下所有文件
 $ git commit -m "add distributed"
+
+//HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+//穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+//要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+$ git log //git log命令显示从最近到最远的提交日志 出现end字符，按q键退出
+$ git reset --hard HEAD^ //windows版本$ git reset --hard HEAD"^"
+$ git reset --hard 3628164 //commit id版本号没必要写全，前几位就可以了，Git会自动去找
+//首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100
+$git reflog //用来记录你的每一次命令，可以用来查找commit id
+
+//工作区，工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+//暂存区 git add把文件添加进去，实际上就是把文件修改添加到暂存区
+
+//场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+//场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+//场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+$ git checkout -- filename //撤销修改，就是让这个文件回到最近一次git commit或git add时的状态。命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令
+
+$ git rm filename
+$ git commit -m "remove test.txt"  //现在，文件就从版本库中被删除了。
+$ git checkout -- filename  //其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+
+$ git remote add origin git@github.com:jkddt/learngit.git  //添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+$ git push -u origin master //把本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程。
+//由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+$ git push origin master //把本地master分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
+//要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+//关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+//此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快
+
+$ git tag v1.0 //创建标签
+$ git tag 	//查看所有标签
+$ git tag -d v0.1 //删除标签
+
+http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
